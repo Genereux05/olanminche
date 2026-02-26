@@ -1,0 +1,201 @@
+{
+  "best_model": "Gradient Boosting",
+  "feature_cols": [
+    "age",
+    "sexe_bin",
+    "creatinine",
+    "uree",
+    "eGFR",
+    "systole",
+    "diastole",
+    "hb",
+    "hematocrite",
+    "glycemie",
+    "na",
+    "k",
+    "ca",
+    "pouls",
+    "proteinurie_score",
+    "atcd_hta",
+    "atcd_diabete",
+    "atcd_irc",
+    "atcd_cardio",
+    "tabac",
+    "alcool",
+    "phytotherapie",
+    "symp_hta",
+    "symp_anemie",
+    "symp_oligurie",
+    "symp_omi",
+    "fam_hta",
+    "fam_diabete",
+    "bu_hematurie",
+    "bu_glucosurie"
+  ],
+  "rf_cv_f1": 0.8872,
+  "gb_cv_f1": 0.8906,
+  "rf_cv_std": 0.0284,
+  "gb_cv_std": 0.0395,
+  "rf_train_acc": 0.9837,
+  "gb_train_acc": 1.0,
+  "n_patients": 306,
+  "stage_distribution": {
+    "1": 46,
+    "2": 52,
+    "3": 98,
+    "4": 50,
+    "5": 60
+  },
+  "importance": [
+    {
+      "feature": "eGFR",
+      "label": "DFG estimé (mL/min/1.73m²)",
+      "mean_importance": 0.4698563915078652
+    },
+    {
+      "feature": "creatinine",
+      "label": "Créatinine (mg/L)",
+      "mean_importance": 0.22812366259008848
+    },
+    {
+      "feature": "uree",
+      "label": "Urée (g/L)",
+      "mean_importance": 0.06012484377336733
+    },
+    {
+      "feature": "hb",
+      "label": "Hémoglobine (g/dL)",
+      "mean_importance": 0.03269828248521939
+    },
+    {
+      "feature": "na",
+      "label": "Sodium Na⁺ (meq/L)",
+      "mean_importance": 0.027337061529907853
+    },
+    {
+      "feature": "age",
+      "label": "Âge",
+      "mean_importance": 0.02589223409531842
+    },
+    {
+      "feature": "k",
+      "label": "Potassium K⁺ (meq/L)",
+      "mean_importance": 0.021046137917400953
+    },
+    {
+      "feature": "diastole",
+      "label": "Tension diastolique (mmHg)",
+      "mean_importance": 0.01852054953563555
+    },
+    {
+      "feature": "hematocrite",
+      "label": "Hématocrite (%)",
+      "mean_importance": 0.018348133948972913
+    },
+    {
+      "feature": "ca",
+      "label": "Calcium Ca²⁺ (meq/L)",
+      "mean_importance": 0.01800172293144323
+    },
+    {
+      "feature": "pouls",
+      "label": "Pouls (bpm)",
+      "mean_importance": 0.017700669554721
+    },
+    {
+      "feature": "glycemie",
+      "label": "Glycémie à jeun (g/L)",
+      "mean_importance": 0.016817117135386167
+    },
+    {
+      "feature": "systole",
+      "label": "Tension systolique (mmHg)",
+      "mean_importance": 0.015516003586650073
+    },
+    {
+      "feature": "proteinurie_score",
+      "label": "Protéinurie (score)",
+      "mean_importance": 0.004775817617629243
+    },
+    {
+      "feature": "sexe_bin",
+      "label": "Sexe (M=1)",
+      "mean_importance": 0.004711458229077267
+    },
+    {
+      "feature": "atcd_diabete",
+      "label": "ATCD: Diabète",
+      "mean_importance": 0.004524086265168146
+    },
+    {
+      "feature": "phytotherapie",
+      "label": "Phytothérapie trad.",
+      "mean_importance": 0.0029800844045606003
+    },
+    {
+      "feature": "atcd_hta",
+      "label": "ATCD: HTA",
+      "mean_importance": 0.002962500323920895
+    },
+    {
+      "feature": "symp_anemie",
+      "label": "Symptôme: Anémie",
+      "mean_importance": 0.0028033328186276097
+    },
+    {
+      "feature": "atcd_irc",
+      "label": "ATCD: IRC",
+      "mean_importance": 0.001900867094845484
+    },
+    {
+      "feature": "alcool",
+      "label": "Alcool",
+      "mean_importance": 0.0014311949362550995
+    },
+    {
+      "feature": "symp_oligurie",
+      "label": "Symptôme: Oligurie",
+      "mean_importance": 0.0011461660643741418
+    },
+    {
+      "feature": "atcd_cardio",
+      "label": "ATCD: Cardiovasculaire",
+      "mean_importance": 0.0010398058473041916
+    },
+    {
+      "feature": "fam_diabete",
+      "label": "ATCD familial: Diabète",
+      "mean_importance": 0.0006523750247366014
+    },
+    {
+      "feature": "symp_hta",
+      "label": "Symptôme: HTA",
+      "mean_importance": 0.0005730259759745555
+    },
+    {
+      "feature": "fam_hta",
+      "label": "ATCD familial: HTA",
+      "mean_importance": 0.0003915068842376108
+    },
+    {
+      "feature": "tabac",
+      "label": "Tabac",
+      "mean_importance": 0.00012496792131198644
+    },
+    {
+      "feature": "symp_omi",
+      "label": "Symptôme: OMI",
+      "mean_importance": 0.0
+    },
+    {
+      "feature": "bu_hematurie",
+      "label": "BU: Hématurie",
+      "mean_importance": 0.0
+    },
+    {
+      "feature": "bu_glucosurie",
+      "label": "BU: Glucosurie",
+      "mean_importance": 0.0
+    }
+  ]
+}
