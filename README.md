@@ -1,7 +1,7 @@
-# 🫀 AI4CKD — Dashboard IA pour la Maladie Rénale Chronique
+# 🫀 Olanmiché — Dashboard IA pour la Maladie Rénale Chronique
 
 > **Intelligence Artificielle au service de la détection précoce de la MRC**  
-> Bootcamp Cohorte 1 · CNHU/HKM · Cotonou, Bénin · 2025
+> Bootcamp Cohorte 1 ·  Bénin · 2025
 
 ---
 
@@ -19,7 +19,7 @@
 
 ## 🎯 Présentation
 
-**AI4CKD** est une application web interactive de détection et de prédiction de la **Maladie Rénale Chronique (CKD)**. Elle combine :
+**Olanmiché** est une application web interactive de détection et de prédiction de la **Maladie Rénale Chronique (CKD)**. Elle combine :
 
 - 🤖 **Machine Learning** (Random Forest + Gradient Boosting)
 - 📊 **Analyse exploratoire** des données cliniques
@@ -41,7 +41,7 @@ ckd_project/
 ├── app.py                    # 🚀 Dashboard Streamlit principal
 │
 ├── data/
-│   └── Data_AI4CKD_Original.csv   # Dataset patients CNHU/HKM
+│   └── Data_AI4CKD_Original.csv   # Dataset patients d'un hopital béninois
 │
 ├── models/
 │   ├── train_model.py        # Script d'entraînement ML
@@ -249,4 +249,4 @@ Toutes les données sont utilisées uniquement dans le cadre de ce projet de rec
 
 ---
 
-*Bonne Chance ! Ici, c'est l'AMA !* 🎓
+*Ici, c'est l'AMA !* 🎓
