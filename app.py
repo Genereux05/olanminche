@@ -366,7 +366,8 @@ def load_models():
         p = os.path.join(model_dir, f'{name}.pkl')
         if os.path.exists(p):
             with open(p, 'rb') as f:
-                models[name] = pickle.load(f)
+                mdl = pickle.load(f)
+                models[name] = patch_simple_imputer_compat(mdl)
     meta_path = os.path.join(model_dir, 'metadata.json')
     meta = {}
     if os.path.exists(meta_path):
@@ -385,6 +386,43 @@ def page_hero(title, subtitle):
         """,
         unsafe_allow_html=True,
     )
+
+
+def patch_simple_imputer_compat(estimator):
+    """Patch legacy SimpleImputer objects loaded from older sklearn pickles."""
+    visited = set()
+
+    def _walk(obj):
+        oid = id(obj)
+        if obj is None or oid in visited:
+            return
+        visited.add(oid)
+
+        if isinstance(obj, SimpleImputer):
+            if not hasattr(obj, "_fill_dtype"):
+                stats = getattr(obj, "statistics_", None)
+                if stats is not None:
+                    obj._fill_dtype = np.asarray(stats).dtype
+                else:
+                    obj._fill_dtype = np.dtype("float64")
+            return
+
+        if isinstance(obj, dict):
+            for v in obj.values():
+                _walk(v)
+            return
+
+        if isinstance(obj, (list, tuple, set)):
+            for v in obj:
+                _walk(v)
+            return
+
+        if hasattr(obj, "__dict__"):
+            for v in obj.__dict__.values():
+                _walk(v)
+
+    _walk(estimator)
+    return estimator
 
 
 def _sha256(text):
@@ -1082,9 +1120,17 @@ elif page == "🤖 Prédiction IA":
                 X_patient[col] = 0
         X_patient = X_patient[feature_cols]
 
-        pred_stage = best_model.predict(X_patient)[0]
-        pred_proba = best_model.predict_proba(X_patient)[0]
-        classes = best_model.classes_
+        try:
+            pred_stage = best_model.predict(X_patient)[0]
+            pred_proba = best_model.predict_proba(X_patient)[0]
+            classes = best_model.classes_
+        except Exception as e:
+            st.error(
+                "Erreur de compatibilité modèle/environnement pendant la prédiction. "
+                "Veuillez réentraîner et republier les modèles avec les mêmes versions de dépendances."
+            )
+            st.exception(e)
+            st.stop()
 
         tmp = pd.DataFrame([patient_data])
         for col in ['atcd_hta', 'atcd_diabete', 'atcd_cardio', 'tabac', 'alcool', 'phytotherapie']:
