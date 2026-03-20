@@ -586,7 +586,7 @@ if not st.session_state.authenticated:
         with st.form("login_form", clear_on_submit=False):
             login_user = st.text_input("Identifiant", placeholder="ex: admin.centre")
             login_pass = st.text_input("Mot de passe", type="password", placeholder="Votre mot de passe")
-            login_submit = st.form_submit_button("Acceder a la plateforme", width='stretch', type="primary")
+            login_submit = st.form_submit_button("Acceder a la plateforme", use_container_width=True, type="primary")
 
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -639,7 +639,7 @@ with st.sidebar:
     """, unsafe_allow_html=True)
 
     st.caption(f"Connecté: {st.session_state.get('auth_user', 'N/A')}")
-    if st.button("Se déconnecter", width='stretch'):
+    if st.button("Se déconnecter", use_container_width=True):
         st.session_state.authenticated = False
         st.session_state.auth_user = ""
         if hasattr(st, "rerun"):
@@ -715,7 +715,7 @@ if page == "🏠 Accueil & Vue d'ensemble":
             font=dict(family='Manrope')
         )
         fig_stage.update_xaxes(tickangle=-20)
-        st.plotly_chart(fig_stage, width='stretch')
+        st.plotly_chart(fig_stage, use_container_width=True)
 
     with col_right:
         # Répartition par risque
@@ -734,7 +734,7 @@ if page == "🏠 Accueil & Vue d'ensemble":
             margin=dict(t=20, b=20),
             font=dict(family='Manrope')
         )
-        st.plotly_chart(fig_risk, width='stretch')
+        st.plotly_chart(fig_risk, use_container_width=True)
 
     # ── Ligne 2 ───────────────────────────────────────────
     c1, c2 = st.columns(2)
@@ -751,7 +751,7 @@ if page == "🏠 Accueil & Vue d'ensemble":
         fig_sex.update_layout(plot_bgcolor='white', paper_bgcolor='white',
                               height=280, margin=dict(t=10, b=10),
                               font=dict(family='Manrope'))
-        st.plotly_chart(fig_sex, width='stretch')
+        st.plotly_chart(fig_sex, use_container_width=True)
 
     with c2:
         st.markdown("<div class='section-title'>🎂 Distribution de l'Âge par Stade</div>", unsafe_allow_html=True)
@@ -767,7 +767,7 @@ if page == "🏠 Accueil & Vue d'ensemble":
         fig_age.update_layout(showlegend=False, plot_bgcolor='white', paper_bgcolor='white',
                               height=280, margin=dict(t=10, b=10),
                               font=dict(family='Manrope'))
-        st.plotly_chart(fig_age, width='stretch')
+        st.plotly_chart(fig_age, use_container_width=True)
 
     # ── Facteurs de risque ────────────────────────────────
     st.markdown("<div class='section-title'>🔍 Prévalence des Facteurs de Risque</div>", unsafe_allow_html=True)
@@ -795,7 +795,7 @@ if page == "🏠 Accueil & Vue d'ensemble":
                          plot_bgcolor='white', paper_bgcolor='white',
                          height=320, margin=dict(t=10, b=10, r=80),
                          font=dict(family='Manrope'))
-    st.plotly_chart(fig_rf, width='stretch')
+    st.plotly_chart(fig_rf, use_container_width=True)
 
 
 # ─────────────────────────────────────────────────────────
@@ -841,7 +841,7 @@ elif page == "📊 Analyse Exploratoire":
                                 height=380, margin=dict(t=30, b=10),
                                 title=f'Distribution : {col_label}',
                                 font=dict(family='Manrope'))
-            st.plotly_chart(fig_v, width='stretch')
+            st.plotly_chart(fig_v, use_container_width=True)
 
         with col_b:
             # Scatterplot eGFR vs Creatinine
@@ -860,7 +860,7 @@ elif page == "📊 Analyse Exploratoire":
             fig_s.update_layout(plot_bgcolor='rgba(248,249,250,1)', paper_bgcolor='white',
                                 height=380, margin=dict(t=40, b=10),
                                 font=dict(family='Manrope'))
-            st.plotly_chart(fig_s, width='stretch')
+            st.plotly_chart(fig_s, use_container_width=True)
 
     with tab2:
         st.markdown("#### Matrice de corrélation des biomarqueurs")
@@ -887,7 +887,7 @@ elif page == "📊 Analyse Exploratoire":
             margin=dict(t=50, b=10, l=10, r=10),
             font=dict(family='Manrope')
         )
-        st.plotly_chart(fig_corr, width='stretch')
+        st.plotly_chart(fig_corr, use_container_width=True)
 
     with tab3:
         st.markdown("#### Statistiques descriptives des variables numériques")
@@ -897,7 +897,7 @@ elif page == "📊 Analyse Exploratoire":
         desc = df[available_v].describe().T
         desc.index = [FEATURE_LABELS.get(c, c) for c in desc.index]
         desc = desc.round(2)
-        st.dataframe(desc, width='stretch')
+        st.dataframe(desc, use_container_width=True)
 
         # Valeurs manquantes
         st.markdown("#### Taux de complétude des données")
@@ -918,7 +918,7 @@ elif page == "📊 Analyse Exploratoire":
         fig_miss.update_layout(showlegend=False, plot_bgcolor='white', paper_bgcolor='white',
                                height=420, margin=dict(t=10, b=10, r=80),
                                font=dict(family='Manrope'))
-        st.plotly_chart(fig_miss, width='stretch')
+        st.plotly_chart(fig_miss, use_container_width=True)
 
     with tab4:
         st.markdown("#### Comorbidités et facteurs de risque par stade CKD")
@@ -949,7 +949,7 @@ elif page == "📊 Analyse Exploratoire":
             title='Prévalence des comorbidités par stade (%)'
         )
         fig_ch.update_layout(height=380, font=dict(family='Manrope'))
-        st.plotly_chart(fig_ch, width='stretch')
+        st.plotly_chart(fig_ch, use_container_width=True)
 
 
 # ─────────────────────────────────────────────────────────
@@ -1015,7 +1015,7 @@ elif page == "🗺️ Cartographie des Risques":
             coloraxis_colorbar=dict(title=metric_label, len=0.7),
             font=dict(family='Manrope')
         )
-        st.plotly_chart(fig_map, width='stretch')
+        st.plotly_chart(fig_map, use_container_width=True)
 
         # Tableau récapitulatif
         st.markdown("##### Résumé par département")
@@ -1027,7 +1027,7 @@ elif page == "🗺️ Cartographie des Risques":
         display_df['Stade Moyen'] = display_df['Stade Moyen'].round(2)
         display_df['Score Risque Moyen'] = display_df['Score Risque Moyen'].round(1)
 
-        st.dataframe(display_df, width='stretch', hide_index=True)
+        st.dataframe(display_df, use_container_width=True, hide_index=True)
 
         # Bar chart
         fig_bar = px.bar(
@@ -1042,7 +1042,7 @@ elif page == "🗺️ Cartographie des Risques":
                                plot_bgcolor='white', paper_bgcolor='white',
                                height=350, margin=dict(t=40, b=10),
                                font=dict(family='Manrope'))
-        st.plotly_chart(fig_bar, width='stretch')
+        st.plotly_chart(fig_bar, use_container_width=True)
     else:
         st.warning("La colonne 'departement' n'est pas disponible dans les données.")
 
@@ -1173,17 +1173,17 @@ elif page == "🤖 Prédiction IA":
 
     nav_left, nav_mid, nav_right = st.columns([1, 1, 2])
     with nav_left:
-        if st.button("⬅️ Précédent", disabled=(step == 1), width='stretch'):
+        if st.button("⬅️ Précédent", disabled=(step == 1), use_container_width=True):
             st.session_state.pred_step = max(1, step - 1)
             safe_rerun()
     with nav_mid:
-        if st.button("Suivant ➡️", disabled=(step == len(steps)), width='stretch'):
+        if st.button("Suivant ➡️", disabled=(step == len(steps)), use_container_width=True):
             st.session_state.pred_step = min(len(steps), step + 1)
             safe_rerun()
     with nav_right:
         run_pred = st.button(
             "🔮 Lancer la prédiction",
-            width='stretch',
+            use_container_width=True,
             type="primary",
             disabled=(step != len(steps)),
         )
@@ -1302,7 +1302,7 @@ elif page == "🤖 Prédiction IA":
             number={'suffix': '/100', 'font': {'size': 28}}
         ))
         fig_gauge.update_layout(height=280, margin=dict(t=30, b=0, l=30, r=30), font=dict(family='Manrope'))
-        st.plotly_chart(fig_gauge, width='stretch')
+        st.plotly_chart(fig_gauge, use_container_width=True)
 
         st.markdown("#### Probabilités par stade CKD")
         prob_df = pd.DataFrame({
@@ -1326,7 +1326,7 @@ elif page == "🤖 Prédiction IA":
             margin=dict(t=10, b=10),
             font=dict(family='Manrope')
         )
-        st.plotly_chart(fig_prob, width='stretch')
+        st.plotly_chart(fig_prob, use_container_width=True)
 
         st.markdown("#### 💊 Recommandations Cliniques")
         recs = {
@@ -1406,7 +1406,7 @@ elif page == "📈 Performance des Modèles":
                                plot_bgcolor='white', paper_bgcolor='white',
                                height=300, margin=dict(t=40, b=10),
                                font=dict(family='Manrope'))
-        st.plotly_chart(fig_dist, width='stretch')
+        st.plotly_chart(fig_dist, use_container_width=True)
 
     # ── Matrice de confusion (simulation) ─────────────────
     st.markdown("### 🎯 Importance des Features (Top 15)")
@@ -1423,7 +1423,7 @@ elif page == "📈 Performance des Modèles":
                               plot_bgcolor='white', paper_bgcolor='white',
                               height=480, margin=dict(t=40, b=10, r=20),
                               font=dict(family='Manrope'))
-        st.plotly_chart(fig_imp, width='stretch')
+        st.plotly_chart(fig_imp, use_container_width=True)
 
 
 # ─────────────────────────────────────────────────────────
@@ -1460,7 +1460,7 @@ elif page == "👁️ Explications & SHAP":
             )
             fig_tree.update_layout(height=420, font=dict(family='Manrope'),
                                    margin=dict(t=40, b=10))
-            st.plotly_chart(fig_tree, width='stretch')
+            st.plotly_chart(fig_tree, use_container_width=True)
 
             # Radar chart des catégories
             categories = {
@@ -1493,7 +1493,7 @@ elif page == "👁️ Explications & SHAP":
                     height=420, font=dict(family='Manrope'),
                     margin=dict(t=50, b=10)
                 )
-                st.plotly_chart(fig_radar, width='stretch')
+                st.plotly_chart(fig_radar, use_container_width=True)
 
     with tab_stage:
         st.markdown("#### Facteurs de risque prévalents par stade CKD")
@@ -1522,7 +1522,7 @@ elif page == "👁️ Explications & SHAP":
                 fig_line.update_layout(plot_bgcolor='white', paper_bgcolor='white',
                                        height=250, margin=dict(t=40, b=10),
                                        font=dict(family='Manrope'))
-                st.plotly_chart(fig_line, width='stretch')
+                st.plotly_chart(fig_line, use_container_width=True)
 
     with tab_individual:
         st.markdown("#### Explication SHAP simplifiée pour un patient du dataset")
@@ -1574,7 +1574,7 @@ elif page == "👁️ Explications & SHAP":
                         height=480, margin=dict(t=50, b=10, l=10),
                         font=dict(family='Manrope')
                     )
-                    st.plotly_chart(fig_wf, width='stretch')
+                    st.plotly_chart(fig_wf, use_container_width=True)
 
                 # Probabilités
                 prob_df = pd.DataFrame({
@@ -1590,7 +1590,7 @@ elif page == "👁️ Explications & SHAP":
                                     plot_bgcolor='white', paper_bgcolor='white',
                                     height=280, margin=dict(t=40, b=10),
                                     font=dict(family='Manrope'))
-                st.plotly_chart(fig_p, width='stretch')
+                st.plotly_chart(fig_p, use_container_width=True)
             else:
                 st.warning("Patient non disponible dans la matrice de features.")
 
