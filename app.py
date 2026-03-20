@@ -37,7 +37,7 @@ from sklearn.impute import SimpleImputer
 # ─────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Olanminché — Tableau de Bord",
-    page_icon="🫀",
+    page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -47,127 +47,197 @@ st.set_page_config(
 # ─────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap');
 
 :root {
-    --bg-a: #f4f8fc;
-    --bg-b: #eef7f3;
+    --bg-main: #f3f6fb;
+    --bg-soft: #eaf0f7;
     --surface: #ffffff;
-    --ink: #0f2741;
-    --muted: #60758a;
-    --line: #dce7ef;
-    --primary: #0077b6;
-    --primary-deep: #023e8a;
-    --teal: #0f766e;
-    --gold: #f59e0b;
-    --title-strong: #001a72;
+    --ink: #000000;
+    --muted: #000000;
+    --line: #d4deea;
+    --primary: #0b57d0;
+    --primary-deep: #0842a0;
+    --accent: #0f766e;
+    --warn: #b45309;
+    --danger: #b91c1c;
+}
+
+@keyframes fadeLift {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 html, body, [class*="css"] {
-    font-family: 'Manrope', sans-serif;
+    font-family: 'Source Sans 3', sans-serif;
     color: var(--ink);
+    font-weight: 500;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Space Grotesk', sans-serif !important;
+    letter-spacing: -0.01em;
+}
+
+[data-testid="stAppViewContainer"] h1,
+[data-testid="stAppViewContainer"] h2,
+[data-testid="stAppViewContainer"] h3,
+[data-testid="stAppViewContainer"] h4,
+[data-testid="stAppViewContainer"] h5,
+[data-testid="stAppViewContainer"] h6 {
+    color: #001a72 !important;
+}
+
+[data-testid="stAppViewContainer"] p,
+[data-testid="stAppViewContainer"] li,
+[data-testid="stAppViewContainer"] span,
+[data-testid="stAppViewContainer"] label,
+[data-testid="stAppViewContainer"] small,
+[data-testid="stAppViewContainer"] .stCaption,
+[data-testid="stAppViewContainer"] [data-testid="stMarkdownContainer"] {
+    color: #000000 !important;
 }
 
 [data-testid="stAppViewContainer"] {
     background:
-        radial-gradient(1200px 500px at 0% 0%, #e1f2ff 0%, transparent 60%),
-        radial-gradient(900px 500px at 100% 0%, #def7ec 0%, transparent 55%),
-        linear-gradient(180deg, var(--bg-a), var(--bg-b));
+        radial-gradient(1100px 520px at 2% -8%, #dce9ff 0%, transparent 58%),
+        radial-gradient(780px 420px at 100% 0%, #d7f2eb 0%, transparent 55%),
+        linear-gradient(180deg, var(--bg-main) 0%, var(--bg-soft) 100%);
 }
 
 [data-testid="stHeader"] { background: transparent; }
 
 .main-header {
-    background: linear-gradient(120deg, #023e8a 0%, #0077b6 45%, #0096c7 100%);
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(118deg, #0f172a 0%, #0b57d0 58%, #1976d2 100%);
     padding: 2rem 2.2rem;
     border-radius: 22px;
-    margin-bottom: 1.4rem;
-    color: #f8fbff;
-    box-shadow: 0 12px 36px rgba(2, 62, 138, 0.22);
+    margin-bottom: 1.3rem;
+    color: #f8fafc;
+    box-shadow: 0 20px 45px rgba(11, 87, 208, 0.24);
+    animation: fadeLift 420ms ease-out both;
 }
+
+.main-header::after {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    right: -80px;
+    top: -120px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+}
+
 .main-header h1 {
     margin: 0;
-    font-size: 2.2rem;
-    font-weight: 800;
-    font-family: 'DM Serif Display', serif;
-    letter-spacing: 0.3px;
+    font-size: 2.1rem;
+    font-weight: 700;
 }
-.main-header p { margin: 0.45rem 0 0; opacity: 0.94; font-size: 1rem; }
+
+.main-header p {
+    margin: 0.4rem 0 0;
+    opacity: 0.96;
+    font-size: 1rem;
+}
 
 .page-hero {
-    background: linear-gradient(130deg, #ffffff 0%, #eff8ff 52%, #ecfff6 100%);
-    border: 1px solid #dbeaf7;
+    background: linear-gradient(140deg, #ffffff 0%, #edf3ff 50%, #eefaf4 100%);
+    border: 1px solid #d8e2f0;
     border-radius: 20px;
-    padding: 1.2rem 1.4rem;
+    padding: 1.15rem 1.35rem;
     margin-bottom: 1rem;
-    box-shadow: 0 8px 26px rgba(15, 39, 65, 0.06);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+    animation: fadeLift 380ms ease-out both;
 }
-.page-hero h2 { margin: 0; color: var(--title-strong); font-size: 1.75rem; font-weight: 800; }
-.page-hero p { margin: 0.35rem 0 0; color: #183a5a; }
-.stCaption, small { color: #1f3f5d !important; }
 
-.metric-card {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 16px;
-    padding: 1.2rem 1.4rem;
-    border: 1px solid #d9e8f3;
-    box-shadow: 0 6px 16px rgba(15, 39, 65, 0.07);
-    border-left: 6px solid #0077b6;
-    margin-bottom: 1rem;
+.page-hero h2 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 1.58rem;
+    font-weight: 700;
 }
-.metric-card.green  { border-left-color: #0f766e; }
-.metric-card.orange { border-left-color: #f59e0b; }
-.metric-card.red    { border-left-color: #dc2626; }
-.metric-card.blue   { border-left-color: #0077b6; }
-.metric-value { font-size: 2rem; font-weight: 800; color: #023e8a; line-height: 1.1; }
-.metric-label { font-size: 0.82rem; color: #5f7488; text-transform: uppercase; letter-spacing: 0.7px; }
 
-[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #f8fbff 0%, #edf7ff 48%, #ecfbf2 100%);
-    border-right: 1px solid #dbe8f4;
-}
-[data-testid="stSidebar"] h1,
-[data-testid="stSidebar"] h2,
-[data-testid="stSidebar"] h3,
-[data-testid="stSidebar"] p,
-[data-testid="stSidebar"] span,
-[data-testid="stSidebar"] label {
-    color: #0d2a45 !important;
+.page-hero p {
+    margin: 0.35rem 0 0;
+    color: #000000;
+    font-weight: 500;
 }
 
 .section-title {
-    font-size: 1.13rem;
+    font-size: 1.06rem;
     font-weight: 700;
-    color: var(--title-strong);
-    border-bottom: 2px solid #cde4f5;
-    padding-bottom: 0.45rem;
-    margin: 0.9rem 0 0.9rem;
+    color: #0f172a;
+    border-bottom: 2px solid #cfdced;
+    padding-bottom: 0.4rem;
+    margin: 0.9rem 0;
+}
+
+.metric-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    padding: 1rem 1.2rem;
+    border: 1px solid #d8e3ef;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+    border-top: 4px solid var(--primary);
+    margin-bottom: 1rem;
+    animation: fadeLift 460ms ease-out both;
+}
+
+.metric-card.green  { border-top-color: var(--accent); }
+.metric-card.orange { border-top-color: var(--warn); }
+.metric-card.red    { border-top-color: var(--danger); }
+.metric-card.blue   { border-top-color: var(--primary); }
+
+.metric-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.95rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.1;
+}
+
+.metric-label {
+    font-size: 0.79rem;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+}
+
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #fbfdff 0%, #eef3f9 100%);
+    border-right: 1px solid #dae3ee;
+}
+
+[data-testid="stSidebar"] * {
+    color: #000000 !important;
+    font-weight: 500;
 }
 
 div[data-testid="stForm"],
 div[data-testid="stExpander"],
 div[data-testid="stDataFrame"],
 div[data-testid="stMetric"] {
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid #dbe7f1;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid #d9e2ed;
     border-radius: 14px;
 }
 
 div[data-testid="stDataFrame"] { padding: 0.2rem; }
-div[data-testid="stMarkdownContainer"] p { color: #102b44; }
-div[data-testid="stMarkdownContainer"] li { color: #102b44; }
-div[data-testid="stMarkdownContainer"] h1,
-div[data-testid="stMarkdownContainer"] h2,
-div[data-testid="stMarkdownContainer"] h3,
-div[data-testid="stMarkdownContainer"] h4 {
-    color: var(--title-strong) !important;
-}
 
 div[data-baseweb="select"] > div,
 div[data-baseweb="input"] > div,
 textarea {
     border-radius: 12px !important;
-    border-color: #cfe0ed !important;
+    border-color: #c8d6e6 !important;
     background-color: #ffffff !important;
 }
 
@@ -175,113 +245,154 @@ div[data-baseweb="input"] input,
 input[type="text"],
 input[type="password"],
 textarea {
-    color: #000000 !important;
-    -webkit-text-fill-color: #000000 !important;
-    caret-color: #000000 !important;
+    color: #0f172a !important;
+    -webkit-text-fill-color: #0f172a !important;
+    caret-color: #0f172a !important;
 }
 
 div[data-baseweb="input"] input::placeholder,
 input[type="text"]::placeholder,
 input[type="password"]::placeholder,
 textarea::placeholder {
-    color: #5c6b7a !important;
-    opacity: 1 !important;
-}
-
-/* Menus déroulants: bleu foncé lisible */
-div[data-baseweb="select"] *,
-[role="listbox"] *,
-li[role="option"] * {
-    color: #001a72 !important;
-}
-div[data-baseweb="select"] svg {
-    color: #001a72 !important;
-    fill: #001a72 !important;
-}
-[data-testid="stSelectbox"] label,
-[data-testid="stMultiSelect"] label,
-[data-testid="stSelectSlider"] label {
-    color: #001a72 !important;
-    font-weight: 700 !important;
-}
-
-/* Noms de section/session */
-[data-testid="stTabs"] button[role="tab"] {
-    color: #001a72 !important;
-}
-[data-testid="stTabs"] button[role="tab"][aria-selected="true"] {
     color: #000000 !important;
+    opacity: 0.6 !important;
 }
 
-.stButton>button {
-    border-radius: 11px;
-    border: 1px solid #0077b6;
-    background: linear-gradient(120deg, #0077b6, #0096c7);
-    color: white;
-    font-weight: 700;
+.stButton > button {
+    border-radius: 10px;
+    border: 1px solid var(--primary);
+    background: linear-gradient(110deg, #0b57d0 0%, #1a73e8 100%);
+    color: #ffffff;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
-.stButton>button:hover {
-    border-color: #023e8a;
-    filter: brightness(0.96);
+
+.stButton > button:hover {
+    border-color: var(--primary-deep);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(11, 87, 208, 0.25);
 }
 
 button[data-baseweb="tab"] {
     border-radius: 10px 10px 0 0;
-    border: 1px solid #d6e5f1 !important;
-    background: #f6fbff !important;
-    color: #001a72 !important;
+    border: 1px solid #d5dfeb !important;
+    background: #f7faff !important;
+    color: #000000 !important;
+    font-family: 'Space Grotesk', sans-serif;
     font-weight: 700 !important;
 }
+
 button[data-baseweb="tab"][aria-selected="true"] {
-    background: linear-gradient(120deg, #eaf6ff, #e8fcf3) !important;
+    background: linear-gradient(120deg, #eef4ff, #edf9f3) !important;
     color: #000000 !important;
-    border-bottom-color: #9fc4df !important;
+    border-bottom-color: #0b57d0 !important;
+    font-weight: 700 !important;
 }
 
 div[data-testid="stPlotlyChart"] {
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid #d9e8f3;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid #d9e2ed;
     border-radius: 14px;
     padding: 0.25rem;
-    box-shadow: 0 4px 12px rgba(15, 39, 65, 0.05);
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
 }
 
-div[data-testid="stAlert"] {
-    border-radius: 12px;
-    border: 1px solid #cfe1ee;
+.login-shell {
+    max-width: 980px;
+    margin: 2.1rem auto 0.8rem;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #d6e2f0;
+    border-radius: 22px;
+    box-shadow: 0 20px 42px rgba(15, 23, 42, 0.12);
+    overflow: hidden;
 }
 
-.wizard-wrap {
-    border: 1px solid #d9e8f3;
+.login-left {
+    background: linear-gradient(125deg, #0f172a 0%, #0b57d0 75%, #1976d2 100%);
+    color: #f8fafc;
+    padding: 2rem 1.8rem;
     border-radius: 16px;
-    padding: 1rem 1rem 0.8rem;
-    background: rgba(255, 255, 255, 0.94);
-    box-shadow: 0 8px 20px rgba(2, 62, 138, 0.07);
+    min-height: 300px;
 }
-.step-row {
-    display: flex;
-    gap: 0.55rem;
-    flex-wrap: wrap;
-    margin: 0.9rem 0 1rem;
-}
-.step-chip {
-    padding: 0.44rem 0.78rem;
-    border-radius: 999px;
-    border: 1px solid #c7dceb;
-    background: #f6fbff;
-    color: #33546f;
-    font-size: 0.83rem;
+
+.login-left h1 {
+    margin: 0;
+    font-size: 1.85rem;
     font-weight: 700;
 }
-.step-chip.active {
-    background: #0077b6;
-    border-color: #0077b6;
-    color: #fff;
+
+.login-left p {
+    margin-top: 0.6rem;
+    color: rgba(248, 250, 252, 0.95);
 }
-.step-chip.done {
-    background: #dcfce7;
-    border-color: #86efac;
-    color: #166534;
+
+.login-badge {
+    display: inline-block;
+    margin-top: 0.9rem;
+    padding: 0.34rem 0.7rem;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 999px;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.login-right {
+    padding: 1.4rem 1.4rem 1.2rem;
+}
+
+.login-right h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    color: #0f172a;
+}
+
+.login-note {
+    margin: 0.35rem 0 1rem;
+    color: #000000;
+    font-size: 0.94rem;
+    font-weight: 500;
+}
+
+.sidebar-card {
+    border: 1px solid #d5dfeb;
+    border-radius: 14px;
+    padding: 0.75rem 0.8rem;
+    background: #ffffff;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+    margin-top: 0.85rem;
+    animation: fadeLift 500ms ease-out both;
+}
+
+.sidebar-brand {
+    padding: 0.9rem 0.6rem 0.4rem;
+    text-align: center;
+}
+
+.sidebar-brand h2 {
+    margin: 0.3rem 0 0;
+    font-size: 1.22rem;
+}
+
+.sidebar-brand p {
+    margin: 0.2rem 0 0;
+    color: #000000;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+@media (max-width: 900px) {
+    .login-shell {
+        margin: 1rem 0 0.5rem;
+        border-radius: 16px;
+    }
+
+    .login-left,
+    .login-right {
+        padding: 1.2rem 1rem;
+        min-height: auto;
+    }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -452,27 +563,32 @@ if "auth_user" not in st.session_state:
     st.session_state.auth_user = ""
 
 if not st.session_state.authenticated:
-    st.markdown("""
-    <div class='main-header' style='max-width:760px; margin: 2rem auto 1rem;'>
-      <h1>Espace Sécurisé Olanminché</h1>
-      <p>Connexion requise pour accéder aux données patients et aux outils de prédiction.</p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("<div class='login-shell'>", unsafe_allow_html=True)
+    login_left, login_right = st.columns([1.25, 1], gap="large")
 
-    st.markdown("""
-    <div style='max-width:760px; margin:0 auto; background:rgba(255,255,255,.95); border:1px solid #d8e7f3; border-radius:16px; padding:1.2rem 1.3rem;'>
-    <p style='margin:0 0 .7rem; color:#23435f; font-weight:700;'>Authentification</p>
-    <p style='margin:0; color:#45657f;'>Configure les variables d'environnement <code>APP_USERNAME</code> et <code>APP_PASSWORD_HASH</code> (ou <code>APP_PASSWORD</code>) pour un usage sécurisé.</p>
-    </div>
-    """, unsafe_allow_html=True)
+    with login_left:
+        st.markdown("""
+        <div class='login-left'>
+            <span class='login-badge'>Plateforme Clinique</span>
+            <h1>Olanminche Intelligence Care</h1>
+            <p>Un espace unifie pour l'analyse CKD, la prediction et l'aide a la decision clinique.</p>
+            <p style='margin-top:1.2rem; font-size:0.9rem; opacity:.9;'>Concu pour les equipes medicales, data et pilotage hospitalier.</p>
+        </div>
+        """, unsafe_allow_html=True)
 
-    with st.form("login_form", clear_on_submit=False):
-        c1, c2 = st.columns(2)
-        with c1:
-            login_user = st.text_input("Identifiant", placeholder="admin")
-        with c2:
-            login_pass = st.text_input("Mot de passe", type="password")
-        login_submit = st.form_submit_button("Se connecter", use_container_width=True, type="primary")
+    with login_right:
+        st.markdown("""
+        <div class='login-right'>
+            <h3>Connexion securisee</h3>
+            <p class='login-note'>Utilisez vos identifiants administrateur pour acceder au dashboard complet.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        with st.form("login_form", clear_on_submit=False):
+            login_user = st.text_input("Identifiant", placeholder="ex: admin.centre")
+            login_pass = st.text_input("Mot de passe", type="password", placeholder="Votre mot de passe")
+            login_submit = st.form_submit_button("Acceder a la plateforme", width='stretch', type="primary")
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
     if login_submit:
         if authenticate_user(login_user, login_pass):
@@ -485,8 +601,6 @@ if not st.session_state.authenticated:
         else:
             st.error("Identifiant ou mot de passe invalide.")
 
-    if not os.getenv("APP_PASSWORD_HASH") and not os.getenv("APP_PASSWORD"):
-        st.warning("Mode fallback actif. Définis APP_PASSWORD_HASH pour renforcer la confidentialité.")
     st.stop()
 
 # ─────────────────────────────────────────────────────────
@@ -494,13 +608,12 @@ if not st.session_state.authenticated:
 # ─────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
-    <div style='text-align:center; padding: 1rem 0 0.6rem;'>
-      <span style='font-size:2.3rem;'>🫀</span>
-      <h2 style='color:#0f2741; margin:0.35rem 0 0; font-family: "DM Serif Display", serif;'>Olanminché</h2>
-      <p style='color:#2f5d83; font-size:0.82rem; margin: 0.2rem 0 0;'>Plateforme clinique intelligente MRC</p>
-      <p style='color:#4f7595; font-size:0.74rem; margin: 0.2rem 0 0;'>Design médical premium</p>
+        <div class='sidebar-brand'>
+            <span style='font-size:2rem;'>📊</span>
+            <h2>Olanminche</h2>
+            <p>Clinical Intelligence Platform</p>
     </div>
-    <hr style='border-color:#c7ddec; margin: 0.4rem 0 1rem;'>
+        <hr style='border-color:#d4dfeb; margin: 0.4rem 0 0.8rem;'>
     """, unsafe_allow_html=True)
 
     page = st.radio(
@@ -514,21 +627,19 @@ with st.sidebar:
         label_visibility="collapsed"
     )
 
-    st.markdown("<hr style='border-color:#c7ddec;'>", unsafe_allow_html=True)
+    st.markdown("<hr style='border-color:#d4dfeb;'>", unsafe_allow_html=True)
     st.markdown("""
-    <div style='color:#396486; font-size:0.75rem; padding: 0.45rem 0;'>
-    <b style='color:#153a5c;'>Session :</b> utilisateur connecté<br>
-    <b style='color:#153a5c;'>Modèles ML :</b><br>
-    • Random Forest<br>
-    • Gradient Boosting<br><br>
-    <b style='color:#153a5c;'>Dataset :</b> 309 patients<br>
-    <b style='color:#153a5c;'>Features :</b> 30 variables<br>
-    <b style='color:#153a5c;'>F1 Score :</b> 0.897
+    <div class='sidebar-card' style='font-size:0.78rem;'>
+    <b>Session:</b> utilisateur connecte<br>
+    <b>Modeles ML:</b> Random Forest, Gradient Boosting<br>
+    <b>Dataset:</b> 309 patients<br>
+    <b>Variables:</b> 30 features<br>
+    <b>F1 Score:</b> 0.897
     </div>
     """, unsafe_allow_html=True)
 
     st.caption(f"Connecté: {st.session_state.get('auth_user', 'N/A')}")
-    if st.button("Se déconnecter", use_container_width=True):
+    if st.button("Se déconnecter", width='stretch'):
         st.session_state.authenticated = False
         st.session_state.auth_user = ""
         if hasattr(st, "rerun"):
@@ -604,7 +715,7 @@ if page == "🏠 Accueil & Vue d'ensemble":
             font=dict(family='Manrope')
         )
         fig_stage.update_xaxes(tickangle=-20)
-        st.plotly_chart(fig_stage, use_container_width=True)
+        st.plotly_chart(fig_stage, width='stretch')
 
     with col_right:
         # Répartition par risque
@@ -623,7 +734,7 @@ if page == "🏠 Accueil & Vue d'ensemble":
             margin=dict(t=20, b=20),
             font=dict(family='Manrope')
         )
-        st.plotly_chart(fig_risk, use_container_width=True)
+        st.plotly_chart(fig_risk, width='stretch')
 
     # ── Ligne 2 ───────────────────────────────────────────
     c1, c2 = st.columns(2)
@@ -640,7 +751,7 @@ if page == "🏠 Accueil & Vue d'ensemble":
         fig_sex.update_layout(plot_bgcolor='white', paper_bgcolor='white',
                               height=280, margin=dict(t=10, b=10),
                               font=dict(family='Manrope'))
-        st.plotly_chart(fig_sex, use_container_width=True)
+        st.plotly_chart(fig_sex, width='stretch')
 
     with c2:
         st.markdown("<div class='section-title'>🎂 Distribution de l'Âge par Stade</div>", unsafe_allow_html=True)
@@ -656,7 +767,7 @@ if page == "🏠 Accueil & Vue d'ensemble":
         fig_age.update_layout(showlegend=False, plot_bgcolor='white', paper_bgcolor='white',
                               height=280, margin=dict(t=10, b=10),
                               font=dict(family='Manrope'))
-        st.plotly_chart(fig_age, use_container_width=True)
+        st.plotly_chart(fig_age, width='stretch')
 
     # ── Facteurs de risque ────────────────────────────────
     st.markdown("<div class='section-title'>🔍 Prévalence des Facteurs de Risque</div>", unsafe_allow_html=True)
@@ -684,7 +795,7 @@ if page == "🏠 Accueil & Vue d'ensemble":
                          plot_bgcolor='white', paper_bgcolor='white',
                          height=320, margin=dict(t=10, b=10, r=80),
                          font=dict(family='Manrope'))
-    st.plotly_chart(fig_rf, use_container_width=True)
+    st.plotly_chart(fig_rf, width='stretch')
 
 
 # ─────────────────────────────────────────────────────────
@@ -730,7 +841,7 @@ elif page == "📊 Analyse Exploratoire":
                                 height=380, margin=dict(t=30, b=10),
                                 title=f'Distribution : {col_label}',
                                 font=dict(family='Manrope'))
-            st.plotly_chart(fig_v, use_container_width=True)
+            st.plotly_chart(fig_v, width='stretch')
 
         with col_b:
             # Scatterplot eGFR vs Creatinine
@@ -749,7 +860,7 @@ elif page == "📊 Analyse Exploratoire":
             fig_s.update_layout(plot_bgcolor='rgba(248,249,250,1)', paper_bgcolor='white',
                                 height=380, margin=dict(t=40, b=10),
                                 font=dict(family='Manrope'))
-            st.plotly_chart(fig_s, use_container_width=True)
+            st.plotly_chart(fig_s, width='stretch')
 
     with tab2:
         st.markdown("#### Matrice de corrélation des biomarqueurs")
@@ -776,7 +887,7 @@ elif page == "📊 Analyse Exploratoire":
             margin=dict(t=50, b=10, l=10, r=10),
             font=dict(family='Manrope')
         )
-        st.plotly_chart(fig_corr, use_container_width=True)
+        st.plotly_chart(fig_corr, width='stretch')
 
     with tab3:
         st.markdown("#### Statistiques descriptives des variables numériques")
@@ -786,7 +897,7 @@ elif page == "📊 Analyse Exploratoire":
         desc = df[available_v].describe().T
         desc.index = [FEATURE_LABELS.get(c, c) for c in desc.index]
         desc = desc.round(2)
-        st.dataframe(desc, use_container_width=True)
+        st.dataframe(desc, width='stretch')
 
         # Valeurs manquantes
         st.markdown("#### Taux de complétude des données")
@@ -807,7 +918,7 @@ elif page == "📊 Analyse Exploratoire":
         fig_miss.update_layout(showlegend=False, plot_bgcolor='white', paper_bgcolor='white',
                                height=420, margin=dict(t=10, b=10, r=80),
                                font=dict(family='Manrope'))
-        st.plotly_chart(fig_miss, use_container_width=True)
+        st.plotly_chart(fig_miss, width='stretch')
 
     with tab4:
         st.markdown("#### Comorbidités et facteurs de risque par stade CKD")
@@ -838,7 +949,7 @@ elif page == "📊 Analyse Exploratoire":
             title='Prévalence des comorbidités par stade (%)'
         )
         fig_ch.update_layout(height=380, font=dict(family='Manrope'))
-        st.plotly_chart(fig_ch, use_container_width=True)
+        st.plotly_chart(fig_ch, width='stretch')
 
 
 # ─────────────────────────────────────────────────────────
@@ -904,7 +1015,7 @@ elif page == "🗺️ Cartographie des Risques":
             coloraxis_colorbar=dict(title=metric_label, len=0.7),
             font=dict(family='Manrope')
         )
-        st.plotly_chart(fig_map, use_container_width=True)
+        st.plotly_chart(fig_map, width='stretch')
 
         # Tableau récapitulatif
         st.markdown("##### Résumé par département")
@@ -916,7 +1027,7 @@ elif page == "🗺️ Cartographie des Risques":
         display_df['Stade Moyen'] = display_df['Stade Moyen'].round(2)
         display_df['Score Risque Moyen'] = display_df['Score Risque Moyen'].round(1)
 
-        st.dataframe(display_df, use_container_width=True, hide_index=True)
+        st.dataframe(display_df, width='stretch', hide_index=True)
 
         # Bar chart
         fig_bar = px.bar(
@@ -931,7 +1042,7 @@ elif page == "🗺️ Cartographie des Risques":
                                plot_bgcolor='white', paper_bgcolor='white',
                                height=350, margin=dict(t=40, b=10),
                                font=dict(family='Manrope'))
-        st.plotly_chart(fig_bar, use_container_width=True)
+        st.plotly_chart(fig_bar, width='stretch')
     else:
         st.warning("La colonne 'departement' n'est pas disponible dans les données.")
 
@@ -1062,17 +1173,17 @@ elif page == "🤖 Prédiction IA":
 
     nav_left, nav_mid, nav_right = st.columns([1, 1, 2])
     with nav_left:
-        if st.button("⬅️ Précédent", disabled=(step == 1), use_container_width=True):
+        if st.button("⬅️ Précédent", disabled=(step == 1), width='stretch'):
             st.session_state.pred_step = max(1, step - 1)
             safe_rerun()
     with nav_mid:
-        if st.button("Suivant ➡️", disabled=(step == len(steps)), use_container_width=True):
+        if st.button("Suivant ➡️", disabled=(step == len(steps)), width='stretch'):
             st.session_state.pred_step = min(len(steps), step + 1)
             safe_rerun()
     with nav_right:
         run_pred = st.button(
             "🔮 Lancer la prédiction",
-            use_container_width=True,
+            width='stretch',
             type="primary",
             disabled=(step != len(steps)),
         )
@@ -1149,7 +1260,7 @@ elif page == "🤖 Prédiction IA":
             <div style='background:{stage_color}15; border:2px solid {stage_color}; border-radius:16px; padding:1.5rem; text-align:center;'>
               <div style='font-size:3rem;'>{'🟢' if pred_stage <= 2 else '🟡' if pred_stage == 3 else '🔴'}</div>
               <div style='font-size:1.8rem; font-weight:700; color:{stage_color}; margin:0.5rem 0;'>CKD Stade {pred_stage}</div>
-              <div style='color:#35526f; font-size:0.9rem;'>{STAGE_NAMES.get(pred_stage, '')}</div>
+                            <div style='color:#000000; font-size:0.9rem; font-weight:600;'>{STAGE_NAMES.get(pred_stage, '')}</div>
             </div>
             """, unsafe_allow_html=True)
 
@@ -1159,7 +1270,7 @@ elif page == "🤖 Prédiction IA":
             <div style='background:{risk_color}15; border:2px solid {risk_color}; border-radius:16px; padding:1.5rem; text-align:center;'>
               <div style='font-size:3rem;'>⚠️</div>
               <div style='font-size:1.8rem; font-weight:700; color:{risk_color}; margin:0.5rem 0;'>{risk_val:.1f}/100</div>
-              <div style='color:#35526f; font-size:0.9rem;'>Risque {risk_cat}</div>
+                            <div style='color:#000000; font-size:0.9rem; font-weight:600;'>Risque {risk_cat}</div>
             </div>
             """, unsafe_allow_html=True)
 
@@ -1170,7 +1281,7 @@ elif page == "🤖 Prédiction IA":
             <div style='background:{egfr_color}15; border:2px solid {egfr_color}; border-radius:16px; padding:1.5rem; text-align:center;'>
               <div style='font-size:3rem;'>🧬</div>
               <div style='font-size:1.8rem; font-weight:700; color:{egfr_color}; margin:0.5rem 0;'>{egfr_display}</div>
-              <div style='color:#35526f; font-size:0.9rem;'>eGFR mL/min/1.73m²</div>
+                            <div style='color:#000000; font-size:0.9rem; font-weight:600;'>eGFR mL/min/1.73m²</div>
             </div>
             """, unsafe_allow_html=True)
 
@@ -1191,7 +1302,7 @@ elif page == "🤖 Prédiction IA":
             number={'suffix': '/100', 'font': {'size': 28}}
         ))
         fig_gauge.update_layout(height=280, margin=dict(t=30, b=0, l=30, r=30), font=dict(family='Manrope'))
-        st.plotly_chart(fig_gauge, use_container_width=True)
+        st.plotly_chart(fig_gauge, width='stretch')
 
         st.markdown("#### Probabilités par stade CKD")
         prob_df = pd.DataFrame({
@@ -1215,7 +1326,7 @@ elif page == "🤖 Prédiction IA":
             margin=dict(t=10, b=10),
             font=dict(family='Manrope')
         )
-        st.plotly_chart(fig_prob, use_container_width=True)
+        st.plotly_chart(fig_prob, width='stretch')
 
         st.markdown("#### 💊 Recommandations Cliniques")
         recs = {
@@ -1248,12 +1359,12 @@ elif page == "📈 Performance des Modèles":
     with col_rf:
         st.markdown(f"""
         <div style='background:#e3f2fd; border:2px solid #1565c0; border-radius:12px; padding:1.2rem; text-align:center;'>
-          <h3 style='color:#1565c0; margin:0;'>🌳 Random Forest</h3>
+                    <h3 style='color:#001a72; margin:0;'>🌳 Random Forest</h3>
           <div style='font-size:2.5rem; font-weight:700; color:#1a237e; margin:0.5rem 0;'>
             {meta.get('rf_cv_f1', 0):.3f}
           </div>
-          <div style='color:#2d4b66;'>F1 Score (CV 5-fold)</div>
-          <div style='color:#3f5c76; margin-top:0.3rem; font-size:0.85rem;'>
+                    <div style='color:#000000; font-weight:600;'>F1 Score (CV 5-fold)</div>
+                    <div style='color:#000000; margin-top:0.3rem; font-size:0.85rem; font-weight:500;'>
             ± {meta.get('rf_cv_std', 0):.3f} | Acc. train: {meta.get('rf_train_acc', 0):.3f}
           </div>
         </div>
@@ -1264,15 +1375,15 @@ elif page == "📈 Performance des Modèles":
         border = '#2e7d32' if 'Gradient' in best else '#1565c0'
         st.markdown(f"""
         <div style='background:#e8f5e9; border:2px solid {border}; border-radius:12px; padding:1.2rem; text-align:center;'>
-          <h3 style='color:#2e7d32; margin:0;'>⚡ Gradient Boosting</h3>
+                    <h3 style='color:#001a72; margin:0;'>⚡ Gradient Boosting</h3>
           <div style='font-size:2.5rem; font-weight:700; color:#1a237e; margin:0.5rem 0;'>
             {meta.get('gb_cv_f1', 0):.3f}
           </div>
-          <div style='color:#2d4b66;'>F1 Score (CV 5-fold)</div>
-          <div style='color:#3f5c76; margin-top:0.3rem; font-size:0.85rem;'>
+                    <div style='color:#000000; font-weight:600;'>F1 Score (CV 5-fold)</div>
+                    <div style='color:#000000; margin-top:0.3rem; font-size:0.85rem; font-weight:500;'>
             ± {meta.get('gb_cv_std', 0):.3f} | Acc. train: {meta.get('gb_train_acc', 0):.3f}
           </div>
-          {'<div style="color:#2e7d32; font-weight:700; margin-top:0.4rem;">⭐ MEILLEUR MODÈLE</div>' if 'Gradient' in best else ''}
+                    {'<div style="color:#001a72; font-weight:700; margin-top:0.4rem;">⭐ MEILLEUR MODÈLE</div>' if 'Gradient' in best else ''}
         </div>
         """, unsafe_allow_html=True)
 
@@ -1295,7 +1406,7 @@ elif page == "📈 Performance des Modèles":
                                plot_bgcolor='white', paper_bgcolor='white',
                                height=300, margin=dict(t=40, b=10),
                                font=dict(family='Manrope'))
-        st.plotly_chart(fig_dist, use_container_width=True)
+        st.plotly_chart(fig_dist, width='stretch')
 
     # ── Matrice de confusion (simulation) ─────────────────
     st.markdown("### 🎯 Importance des Features (Top 15)")
@@ -1312,7 +1423,7 @@ elif page == "📈 Performance des Modèles":
                               plot_bgcolor='white', paper_bgcolor='white',
                               height=480, margin=dict(t=40, b=10, r=20),
                               font=dict(family='Manrope'))
-        st.plotly_chart(fig_imp, use_container_width=True)
+        st.plotly_chart(fig_imp, width='stretch')
 
 
 # ─────────────────────────────────────────────────────────
@@ -1325,7 +1436,7 @@ elif page == "👁️ Explications & SHAP":
     )
 
     st.markdown("""
-    <div style='background:linear-gradient(120deg,#eef7ff,#ecfbf4); border:1px solid #cfe3f1; border-left:5px solid #0077b6; padding:1rem 1.5rem; border-radius:12px; margin-bottom:1.2rem; color:#23435f;'>
+    <div style='background:linear-gradient(120deg,#eef7ff,#ecfbf4); border:1px solid #cfe3f1; border-left:5px solid #0077b6; padding:1rem 1.5rem; border-radius:12px; margin-bottom:1.2rem; color:#000000;'>
     <b>🧠 Interprétabilité du Modèle</b><br>
     Cette section présente les mécanismes d'explication du modèle : importance globale des features,
     contribution par stade, et waterfall chart d'explication individuelle (SHAP simplifié).
@@ -1349,7 +1460,7 @@ elif page == "👁️ Explications & SHAP":
             )
             fig_tree.update_layout(height=420, font=dict(family='Manrope'),
                                    margin=dict(t=40, b=10))
-            st.plotly_chart(fig_tree, use_container_width=True)
+            st.plotly_chart(fig_tree, width='stretch')
 
             # Radar chart des catégories
             categories = {
@@ -1382,7 +1493,7 @@ elif page == "👁️ Explications & SHAP":
                     height=420, font=dict(family='Manrope'),
                     margin=dict(t=50, b=10)
                 )
-                st.plotly_chart(fig_radar, use_container_width=True)
+                st.plotly_chart(fig_radar, width='stretch')
 
     with tab_stage:
         st.markdown("#### Facteurs de risque prévalents par stade CKD")
@@ -1411,7 +1522,7 @@ elif page == "👁️ Explications & SHAP":
                 fig_line.update_layout(plot_bgcolor='white', paper_bgcolor='white',
                                        height=250, margin=dict(t=40, b=10),
                                        font=dict(family='Manrope'))
-                st.plotly_chart(fig_line, use_container_width=True)
+                st.plotly_chart(fig_line, width='stretch')
 
     with tab_individual:
         st.markdown("#### Explication SHAP simplifiée pour un patient du dataset")
@@ -1463,7 +1574,7 @@ elif page == "👁️ Explications & SHAP":
                         height=480, margin=dict(t=50, b=10, l=10),
                         font=dict(family='Manrope')
                     )
-                    st.plotly_chart(fig_wf, use_container_width=True)
+                    st.plotly_chart(fig_wf, width='stretch')
 
                 # Probabilités
                 prob_df = pd.DataFrame({
@@ -1479,7 +1590,7 @@ elif page == "👁️ Explications & SHAP":
                                     plot_bgcolor='white', paper_bgcolor='white',
                                     height=280, margin=dict(t=40, b=10),
                                     font=dict(family='Manrope'))
-                st.plotly_chart(fig_p, use_container_width=True)
+                st.plotly_chart(fig_p, width='stretch')
             else:
                 st.warning("Patient non disponible dans la matrice de features.")
 
@@ -1488,7 +1599,7 @@ elif page == "👁️ Explications & SHAP":
 # ─────────────────────────────────────────────────────────
 st.markdown("---")
 st.markdown("""
-<div style='text-align:center; color:#46647f; font-size:0.8rem; padding: 0.6rem 0.5rem 0.8rem;'>
+<div style='text-align:center; color:#000000; font-size:0.8rem; padding: 0.6rem 0.5rem 0.8rem;'>
   🫀 <b style='color:#023e8a;'>Olanminché</b> — Plateforme IA de détection précoce de la Maladie Rénale Chronique<br>
   Expérience clinique interactive · Bénin · 2026
 </div>
